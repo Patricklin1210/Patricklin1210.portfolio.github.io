@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>PATRICK LIN – Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #05040a;
+      --accent: #b361ff;
+      --accent-soft: rgba(179, 97, 255, 0.25);
+      --text: #f5f5f5;
+      --muted: #aaaaaa;
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow-soft: 0 18px 80px rgba(0, 0, 0, 0.9);
+      --radius-xl: 24px;
+      --transition: 0.25s ease-out;
+
+      /* 滑鼠光暈位置（百分比） */
+      --cursorX: 50%;
+      --cursorY: 0%;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", "Noto Sans TC", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: radial-gradient(circle at top, #25123c 0, #05040a 50%, #020007 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* 滑鼠跟隨光暈：縮到只在滑鼠附近一小圈 */
+    .cursor-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(
+          circle at var(--cursorX) var(--cursorY),
+          rgba(179, 97, 255, 0.35) 0,
+          transparent 60px
+        );
+      mix-blend-mode: screen;
+      opacity: 0.9;
+      transition: background 0.08s linear;
+    }
+
+    header {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1120px, 100% - 32px);
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(5, 4, 10, 0.88);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .logo {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .logo span { font-weight: 700; }
+
+    nav {
+      display: flex;
+      gap: 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+    nav a {
+      padding-bottom: 3px;
+      border-bottom: 1px solid transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    nav a:hover {
+      border-color: var(--accent-soft);
+      color: var(--text);
+    }
+
+    main {
+      width: min(1120px, 100% - 32px);
+      margin: 0 auto;
+      padding-bottom: 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 每一頁 */
+    section.page {
+      min-height: 100vh;
+      padding: 96px 0 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    /* 首頁 Intro */
+    .intro-label {
+      font-size: 12px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: 0.6s ease-out;
+    }
+    .intro-title {
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: 0.6s ease-out;
+    }
+    .intro-title span {
+      background: linear-gradient(120deg, #ff9af3, #b361ff, #6fdcff);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    /* 首頁按鈕區 */
+    .intro-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+      margin-bottom: 12px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: 0.6s ease-out;
+    }
+
+    .intro-btn {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(5, 4, 10, 0.7);
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+      transition:
+        background 0.2s ease-out,
+        border-color 0.2s ease-out,
+        transform 0.15s ease-out,
+        box-shadow 0.15s ease-out;
+    }
+
+    .intro-btn:hover {
+      background: radial-gradient(
+        circle at top,
+        rgba(179, 97, 255, 0.32),
+        rgba(5, 4, 10, 0.96)
+      );
+      border-color: rgba(179, 97, 255, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.7);
+    }
+
+    .intro-btn-ghost {
+      border-style: dashed;
+      border-color: rgba(255, 255, 255, 0.16);
+      color: var(--muted);
+      cursor: default;
+    }
+
+    .intro-btn-ghost:hover {
+      background: rgba(5, 4, 10, 0.7);
+      border-color: rgba(255, 255, 255, 0.16);
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* 作品區 */
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .works-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 16px;
+      gap: 16px;
+    }
+    .works-title {
+      font-size: 16px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .works-sub {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    @media (max-width: 780px) {
+      .works-grid { grid-template-columns: 1fr; }
+      .works-sub { text-align: left; }
+    }
+
+    .work-card {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: radial-gradient(circle at top, #1a0b33, #05030a);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      isolation: isolate;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .work-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.08), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(179, 97, 255, 0.5), transparent 60%);
+      mix-blend-mode: screen;
+      opacity: 0;
+      transition: opacity var(--transition);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .work-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 26px 90px rgba(0, 0, 0, 0.95);
+      border-color: rgba(179, 97, 255, 0.75);
+    }
+    .work-card:hover::before { opacity: 1; }
+
+    .work-img-wrap { padding: 14px; }
+
+    /* 圖片縮小 20%，提高精緻感 */
+    .work-img-inner {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      max-width: 68%;
+      margin: 0 auto;
+    }
+
+    .work-caption {
+      padding: 10px 14px 12px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* =======================
+       Lightbox 預覽區 樣式修改
+       ======================= */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95); /* 增加遮罩透明度 */
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      backdrop-filter: blur(8px); /* 增加模糊度 */
+    }
+    .lightbox.show {
+      display: flex;
+    }
+
+    /* 調整 Lightbox 內部容器，使用 Flex 佈局 */
+    .lightbox-inner {
+      max-width: 95vw; /* 略微加大容器寬度 */
+      max-height: 95vh;
+      display: flex;
+      align-items: flex-start; /* 讓內容靠上對齊 */
+      background: rgba(5, 4, 10, 0.9); /* 背景色，以便與文字區塊融合 */
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+    /* 在小螢幕上使用垂直堆疊 */
+    @media (max-width: 900px) {
+      .lightbox-inner {
+        flex-direction: column;
+        align-items: center;
+        max-height: 90vh;
+        overflow-y: auto; /* 允許垂直滾動 */
+      }
+    }
+
+    /* 圖片容器 */
+    .lightbox-image-wrap {
+      flex: 1; /* 佔據剩餘空間 */
+      max-width: 70vw; /* 最大寬度限制 */
+      height: auto;
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (max-width: 900px) {
+      .lightbox-image-wrap {
+        max-width: 100%;
+        padding: 20px;
+      }
+    }
+
+    /* 確保圖片符合容器且不大於螢幕 */
+    .lightbox-inner img {
+      max-width: 100%;
+      max-height: 85vh; /* 確保圖片能符合高螢幕 */
+      width: auto;
+      height: auto;
+      border-radius: 12px; /* 略微縮小圓角 */
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      pointer-events: none;
+    }
+    @media (max-width: 900px) {
+      .lightbox-inner img {
+        max-height: none; /* 讓它自由伸展 */
+      }
+    }
+
+    /* 新增：文字介紹區塊 */
+    .lightbox-info {
+      width: 380px; /* 固定的文字區寬度 */
+      min-height: 100%;
+      padding: 30px;
+      background: #020105; /* 深色背景區分 */
+      border-left: 1px solid var(--border);
+      overflow-y: auto; /* 允許文字區塊滾動 */
+      /* 讓文字區塊在小螢幕上佔滿寬度 */
+      @media (max-width: 900px) {
+        width: 100%;
+        min-height: auto;
+        border-left: none;
+        border-top: 1px solid var(--border);
+      }
+    }
+
+    .lightbox-info-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+    .lightbox-info-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .lightbox-info-body {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .lightbox-info-body p {
+      margin-bottom: 1em;
+    }
+    .lightbox-info-body ul {
+      margin-left: 1.5em;
+      margin-bottom: 1em;
+    }
+    .lightbox-info-body li {
+      margin-bottom: 0.5em;
+    }
+
+
+    /* =======================
+       其餘樣式不變
+       ======================= */
+
+    footer {
+      text-align: center;
+      padding: 24px 0 16px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    footer span {
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    /* =======================
+       開場動畫 Overlay
+       ======================= */
+    .intro-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #2f1a52 0, #05040a 55%, #000 100%);
+      z-index: 60;
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out, visibility 0.8s;
+    }
+
+    /* 往右滑走 + 淡出 */
+    .intro-overlay.hide {
+      opacity: 0;
+      transform: translateX(80px);
+      visibility: hidden;
+    }
+
+    .intro-overlay-inner {
+      text-align: center;
+      padding: 0 24px;
+      border: none;
+      border-radius: 0;
+      background: none;
+      box-shadow: none;
+    }
+
+    .intro-overlay-tag {
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: overlayTagIn 0.7s ease-out 0.05s forwards;
+    }
+
+    .intro-overlay-title {
+      font-size: clamp(28px, 4.8vw, 42px);
+      font-weight: 700;
+      letter-spacing: 0.30em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #ff9af3, #b361ff, #6fdcff);
+      -webkit-background-clip: text;
+      color: transparent;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: overlayTitleIn 0.9s ease-out 0.25s forwards;
+    }
+
+    /* ========= Animations ========= */
+    @keyframes overlayTagIn {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes overlayTitleIn {
+      0% {
+        opacity: 0;
+        transform: translateY(12px);
+        letter-spacing: 0.40em;
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+        letter-spacing: 0.30em;
+      }
+    }
+
+    /* 開場結束後，讓 intro 文字與按鈕浮現 */
+    .intro-show .intro-label,
+    .intro-show .intro-title,
+    .intro-show .intro-actions {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-glow"></div>
+
+  <div class="intro-overlay" id="intro-overlay">
+    <div class="intro-overlay-inner">
+      <div class="intro-overlay-tag">PORTFOLIO 2024–2025</div>
+      <div class="intro-overlay-title">PATRICK&nbsp;LIN</div>
+    </div>
+  </div>
+
+<header>
+  <div class="logo">
+    <span>PPLIN LIN</span> · PORTFOLIO
+  </div>
+  <nav>
+    <a href="#intro">Intro</a>
+    <a href="#album-1">Album</a>
+    <a href="#light-1">Exhibition</a>
+    <a href="#project-03-A">EXERCISE</a>
+    <a href="#project-04-A">PERSONAL</a>
+    <a href="#project-05-A">COASTER</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="page" id="intro">
+    <div class="intro-label">Portfolio 2024 – 2025</div>
+    <div class="intro-title">
+      PATRICK'S PROFILE<br />
+      <span></span>
+    </div>
+
+    <div class="intro-actions">
+      <button class="intro-btn" data-target="#album-1">Album Project</button>
+      <button class="intro-btn" data-target="#light-1">Light Exhibition</button>
+      <button class="intro-btn" data-target="#project-03-A">LOGO DESIGN EXERCISE</button>
+      <button class="intro-btn" data-target="#project-04-A">PERSONAL LOGO DESIGN</button>
+      <button class="intro-btn" data-target="#project-05-A">COASTER DESIGN</button>
+    </div>
+  </section>
+  
+  <section class="page" id="album-1">
+    <div class="works-header">
+      <div class="works-title">Album Project</div>
+      <div class="works-sub">
+        TRASH《幸福的末班車》專輯設計<br />
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="TRASH《幸福的末班車》專輯封面"
+        data-subtitle="專輯整體視覺概念設計"
+        data-info="<p>整體設計以「末班車」為隱喻，探討時間、情緒與離別的交錯瞬間，紫黑的液態紋理象徵情緒的流動與壓抑，紅色數位字體代表時間的冷冽與倒數，而花與蝶則是從黑暗中綻放的溫度與重生。
+
+這是一場關於「時間與情感」的對話，當一切即將結束，幸福仍以最柔軟的方式殘留在畫面裡</p><ul><li>設計元素： 結合液態紋理（Glitch Art）與賽博龐克風格。</li></ul>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/1.png" alt="專輯封面">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>專輯封面</div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="專輯背面設計"
+        data-subtitle="曲目與版權資訊"
+        data-info="<p>背面設計延續了封面主視覺的冷色調與光影效果。</p><p>字體使用了高對比度的無襯線字體，代表著時間即將歸零，末班車將要駛去。並用微弱的霓虹光暈表現車站時間。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/2.png" alt="專輯背面">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>專輯背面</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="album-2">
+    <div class="works-header">
+      <div class="works-title">Album Project</div>
+      <div class="works-sub">
+       歌詞內頁<br />
+       CD
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="歌詞內頁 – 概念排版"
+        data-subtitle="內頁視覺風格延續"
+        data-info="<p>歌詞頁的設計保持了統一液化風格，利用「TRASH」扭曲，呼應專輯主題的迷失與尋找。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/3.png" alt="Album visual 3">
+          </div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="CD 光碟設計"
+        data-subtitle="光碟表面絲網印刷效果"
+        data-info="<p>CD 利用封面主視覺的蝴蝶，呈現，與內頁的液化，呈現「迷失的幸福」。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/4.png" alt="Album visual 4">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="album-3">
+    <div class="works-header">
+      <div class="works-title">Album Project</div>
+      <div class="works-sub">
+        歌詞本設計<br />
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="歌詞本內頁展開 – 迷幻色調"
+        data-subtitle="跨頁視覺呈現"
+        data-info="<p>跨頁設計嘗試打破常規的對稱，利用前景的文字與背景的漸層製造出強烈的景深與空間感，以背景蝴蝶吸食的花營造出迷幻且略帶壓抑的氛圍。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/5.png" alt="Album visual 5">
+          </div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="歌詞本局部排版"
+        data-subtitle="細節設計與字體選擇"
+        data-info="<p>在細節上，字體大小與行距經過調整，以適應這種風格化排版，同時加入低透明度的圖形元素，增添層次感。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/6.png" alt="Album visual 6">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="album-4">
+    <div class="works-header">
+      <div class="works-title">Album Project</div>
+      <div class="works-sub">
+        Mockup &amp; Presentation<br />
+        實體展示與總覽畫面
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="歌詞本實體展示"
+        data-subtitle="紙張與裝幀效果預覽"
+        data-info="<p>模擬實體印刷的質感，預計選用霧面銅版紙，讓視覺效果更為沉穩內斂。裝幀方式採用騎馬釘，方便翻閱。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/7.png" alt="歌詞本展示">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>歌詞本展示</div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="專輯整體 Mockup"
+        data-subtitle="所有組件總覽"
+        data-info="<p>本 Mockup 呈現了專輯的完整內容，包括外殼、CD 與歌詞本，顯示了各組件之間視覺風格的連貫性與整體協調性。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/8.png" alt="歌詞本 mockup">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>歌詞本 mockup</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="light-1">
+    <div class="works-header">
+      <div class="works-title">Light Exhibition</div>
+      <div class="works-sub">
+        《光雕藝術展 – Sculpting with Light》<br />
+        字體橫式 / 直式組合
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="光雕藝術展 – 橫式字體海報"
+        data-subtitle="主視覺概念海報"
+        data-info="<p>使用自行設計的實驗性字體，結合強烈的霓虹光效，模擬光線在建築表面流動與雕刻的感覺。</p><ul><li>設計重點： 本字體以「光的雕刻感」為概念出發，透過筆畫的留白、切面與
+重心結構，模擬光束在空間中形成的方向性與層次。</li></ul>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/9.png" alt="橫式字體海報">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>橫式字體海報</div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="光雕藝術展 – 直式字體海報"
+        data-subtitle="垂直版面應用"
+        data-info="<p>直式版本優化了文字的垂直排列與閱讀體驗，特別適合應用於戶外燈柱或大型電子螢幕上。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/10.png" alt="直式字體海報">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>直式字體海報</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="light-2">
+    <div class="works-header">
+      <div class="works-title">Light Exhibition</div>
+      <div class="works-sub">
+        Typographic Version · Application<br />
+        字體延伸應用
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="光雕展 – 橫式主視覺延伸"
+        data-subtitle="環境應用模擬"
+        data-info="<p>海報以手繪流光、粒子雲霧與宇宙色帶作為主視覺，展現光在空間中的擴散與流動。
+結合前頁的字體設計，透過幾何框架與橫直式構圖強化層次，使字體、色彩與光效形成一致的視覺語言。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/11.png" alt="橫式主視覺">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>橫式主視覺</div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="光雕展 – 直式主視覺延伸"
+        data-subtitle="燈箱廣告應用"
+        data-info="<p>將直式設計用於燈箱或狹長型的廣告版位，視覺衝擊力強，能迅速抓住行人的目光。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/12.png" alt="直式主視覺">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>直式主視覺</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="page" id="light-3">
+    <div class="works-header">
+      <div class="works-title">Light Exhibition</div>
+      <div class="works-sub">
+        Additional Visuals · Concept Mockups<br />
+        視覺與概念模型
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="橫幅海報展示"
+        data-subtitle="地下街廣告看板"
+        data-info="<p>以橫幅海報模擬在地下街的廣告大看板。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/13.png" alt="橫幅海報展示">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>橫幅mockup</div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="字體與直式海報展示"
+        data-subtitle="掛牌、廣告燈箱與展場簡介卡"
+        data-info="<p>用直式字體與直式海報延伸出展覽周邊與應用。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/14.png" alt="字體與直式海報展示">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>字體與直式海報展示</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="page" id="project-03-A">
+    <div class="works-header">
+      <div class="works-title">Logo Design Exercise</div>
+      <div class="works-sub">
+        Logo design and extended applications<br />
+      logo設計和延伸應用
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="Logo設計"
+        data-subtitle="Direction 1"
+        data-info="<p>以噴漆筆觸建立街頭質地，並透過斜角與滴落細節強化動勢。
+ 
+“IMI” 以抽象化滑板者的姿態構成，呈現滑行時的速度軌跡。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/15.png" alt="Project 03 視覺 15">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>logo 1</div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="延伸應用"
+        data-subtitle="mockup展示"
+        data-info="<p></p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/16.png" alt="Project 03 視覺 16">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>延伸應用</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="project-03-B">
+    <div class="works-header">
+      <div class="works-title">Logo Design Exercise</div>
+      
+      <div class="works-sub">
+        Logo design and extended applications<br />
+        logo設計和延伸應用
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="logo設計"
+        data-subtitle="Direction ２"
+        data-info="<p>以字母 J 的流線作為核心結構，延展為抽象滑板的形式。
+
+線條的方向性與重心配置，使標誌呈現連續而流暢的動態感。 </p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/17.png" alt="logo 2">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>logo 2</div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="延伸應用"
+        data-subtitle="mockup展示"
+        data-info="<p></p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/18.png" alt="延伸應用">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>延伸應用</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="project-04-A">
+    <div class="works-header">
+      <div class="works-title">Personal Logo Design</div>
+      <div class="works-sub">
+        Logo design and extended applications<br />
+        logo設計和延伸應用
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="logo設計"
+        data-subtitle="Direction 1"
+        data-info="<p>將英文 Patrick 的字形融入玫瑰花的莖與葉，以連續單線構成圖形與文字的整合，形成介於簽名與圖像之間的個人化標誌。(19)。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/19.png" alt="Project 04 視覺 19">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>logo 1</div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="延伸應用"
+        data-subtitle="mockup展示"
+        data-info="<p></p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/20.png" alt="Project 04 視覺 20">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>延伸應用</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="project-04-B">
+    <div class="works-header">
+      <div class="works-title">Personal Logo Design</div>
+      <div class="works-sub">
+        Logo design and extended applications<br />
+        logo設計和延伸應用
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="Logo設計"
+        data-subtitle="Direction 2"
+        data-info="<p>以英文名 Patrick 的筆畫為基礎，將字形延展成咖啡杯的輪廓，並以線條的連續性，塑造煙霧般的流動感。
+</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/21.png" alt="Project 04 視覺 21">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>logo 2</div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="延伸應用"
+        data-subtitle="mockup展示"
+        data-info="<p></p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/22.png" alt="Project 04 視覺 22">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>延伸應用</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="page" id="project-05-A">
+    <div class="works-header">
+      <div class="works-title">Coaster Design</div>
+      <div class="works-sub">
+        Coaster full-print design and display<br />
+        杯墊滿版設計與展示
+      </div>
+    </div>
+
+    <div class="works-grid">
+      <div class="work-card"
+        data-title="杯墊設計"
+        data-subtitle="設計介紹"
+        data-info="<p>本作品以「RIPPLES」為起點，將字體設計成流動的形態，藉由波紋式的字形延展與滿版排列於圓形杯墊，象徵漣漪擴散的自然特性，呼應字形的動態，使文字轉化為抽象符號。</p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/23.png" alt="Project 05 視覺 23">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>Ripples</div>
+        </div>
+      </div>
+
+      <div class="work-card"
+        data-title="Mockup展示"
+        data-subtitle=""
+        data-info="<p></p>"
+      >
+        <div class="work-img-wrap">
+          <div class="work-img-inner">
+            <img src="png/24.png" alt="Project 05 視覺 24">
+          </div>
+        </div>
+        <div class="work-caption">
+          <div>mockup</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <div class="lightbox-image-wrap">
+      <img id="lightbox-image" src="" alt="">
+    </div>
+    <div class="lightbox-info">
+      <div class="lightbox-info-title" id="lightbox-title">作品標題</div>
+      <div class="lightbox-info-subtitle" id="lightbox-subtitle">副標題 / 專案名稱</div>
+      <div class="lightbox-info-body" id="lightbox-info-body">
+        <p>點擊作品以查看詳細介紹。請為每個 work-card 添加 data-title, data-subtitle 和 data-info 屬性。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>© <span>PATRICK LIN</span> · 2025</div>
+</footer>
+
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-image');
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxSubtitle = document.getElementById('lightbox-subtitle');
+  const lightboxInfoBody = document.getElementById('lightbox-info-body');
+
+  // 修改 openLightbox 函數，接收所有需要的資訊
+  function openLightbox(src, alt, title, subtitle, info) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightboxTitle.textContent = title || '無標題';
+    lightboxSubtitle.textContent = subtitle || '無副標題';
+    lightboxInfoBody.innerHTML = info || '<p>無詳細介紹。</p>'; // 使用 innerHTML 允許 HTML 標籤
+    lightbox.classList.add('show');
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('show');
+  }
+
+  // 雙擊圖片 → 放大 (改為點擊 work-card)
+  document.querySelectorAll('.work-card').forEach(card => {
+    const img = card.querySelector('img');
+    
+    // 從 work-card 讀取 data 屬性
+    const title = card.dataset.title;
+    const subtitle = card.dataset.subtitle;
+    const info = card.dataset.info;
+
+    // 將事件從 dblclick 改為 click
+    card.addEventListener('click', (e) => {
+      // 避免點擊 work-caption 上的文字也觸發
+      if (!e.target.closest('.work-caption')) { 
+        e.preventDefault();
+        openLightbox(img.src, img.alt, title, subtitle, info);
+      }
+    });
+  });
+
+  // 點背景關閉
+  lightbox.addEventListener('click', (e) => {
+    // 只有點擊到 lightbox 本身（背景）時才關閉
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  // ESC 關閉
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeLightbox();
+    }
+  });
+
+  /* 開場動畫控制 */
+  const overlay = document.getElementById('intro-overlay');
+  const introSection = document.getElementById('intro');
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      overlay.classList.add('hide');
+      introSection.classList.add('intro-show');
+    }, 2600);
+  });
+
+  overlay.addEventListener('click', () => {
+    overlay.classList.add('hide');
+    introSection.classList.add('intro-show');
+  });
+
+  /* 首頁按鈕：跳到對應 section */
+  document.querySelectorAll('.intro-btn[data-target]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-target');
+      const el = document.querySelector(target);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* 滑鼠光暈跟隨 */
+  const root = document.documentElement;
+  document.addEventListener('pointermove', (e) => {
+    const x = (e.clientX / window.innerWidth) * 100;
+    const y = (e.clientY / window.innerHeight) * 100;
+    root.style.setProperty('--cursorX', x + '%');
+    root.style.setProperty('--cursorY', y + '%');
+  });
+</script>
+
+</body>
+</html>
